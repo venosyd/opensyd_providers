@@ -10,4 +10,4 @@ environment:
 dependencies:
   archive:
   opensyd_dart:
-    path: ../opensyd_dart
+    git: git@github.com:venosyd/opensyd_dart.git
