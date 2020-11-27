@@ -1,0 +1,13 @@
+name: "opensyd_providers"
+author: Sergio Lisan <sels@venosyd.com>
+publish_to: "none"
+
+version: 3.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  archive:
+  opensyd_dart:
+    path: ../opensyd_dart
