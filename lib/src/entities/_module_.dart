@@ -47,6 +47,7 @@ abstract class EntitiesRepository extends Entities {
     bool securedev = false,
     Database localdb,
     LoginProvider login,
+    RepositoryProvider repository,
     InstanceBuilder fromjson = opensydEntitiesMap,
     EmptyInstanceGen emptyinstance = opensydEmptyInstance,
     CollectionMap collectionmap = opensydCollectionMap,
@@ -69,10 +70,16 @@ abstract class EntitiesRepository extends Entities {
     }
     //
     else {
+      repository ??= RepositoryProvider(
+        repositoryHost(devmode, securedev),
+        login,
+      );
+
       return _buildRepositoryEntities(
         devmode: devmode,
         securedev: securedev,
         login: login,
+        repository: repository,
         authkey: authkey,
         database: db,
         builder: fromjson,
@@ -113,6 +120,7 @@ abstract class EntitiesRepository extends Entities {
     bool devmode,
     bool securedev,
     LoginProvider login,
+    RepositoryProvider repository,
     String authkey,
     String database,
     InstanceBuilder builder,
@@ -123,7 +131,7 @@ abstract class EntitiesRepository extends Entities {
         authkey: authkey,
         database: database,
         login: login,
-        mongodb: RepositoryProvider(repositoryHost(devmode, securedev), login),
+        mongodb: repository,
         builder: builder,
         collectionmap: collectionmap,
         emptyinstance: emptyinstance,
