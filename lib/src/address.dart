@@ -12,6 +12,7 @@ import 'package:opensyd_dart/opensyd_dart.dart';
 
 import 'entities/_module_.dart';
 import 'login.dart';
+import 'repository.dart';
 import 'util/_module_.dart';
 
 ///
@@ -25,15 +26,17 @@ class AddressProvider {
     String host,
     bool devmode,
     bool securedev,
+    RepositoryProvider repository,
     this.login,
   })  : _http = HttpProvider(host: host, api: _AddressAPI.api),
         entities = EntitiesRepository.build(
-          devmode: devmode,
           login: login,
+          devmode: devmode,
           securedev: securedev,
+          repository: repository,
+          db: '5956b256f5438105c4d2e242ea91e44b',
           authkey: 'b13af2c67189c10fe07bc5f5f90a'
               '4ec7423a8260dd84f015a0b73be5b9930287',
-          db: '5956b256f5438105c4d2e242ea91e44b',
         );
 
   ///
