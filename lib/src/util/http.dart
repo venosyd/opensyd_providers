@@ -8,7 +8,7 @@ library opensyd.dart.providers.http;
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:archive/archive.dart';
+// import 'package:archive/archive.dart';
 import 'package:http/http.dart' as http;
 
 ///
@@ -31,11 +31,7 @@ class HttpProvider {
     Map<String, dynamic> payload, {
     Map<String, String> headers,
   }) async =>
-      await postURL(
-        _buildURL(apis),
-        payload,
-        headers: headers,
-      );
+      await postURL(_buildURL(apis), payload, headers: headers);
 
   ///
   Future<Map<String, dynamic>> get(
@@ -66,11 +62,12 @@ class HttpProvider {
     try {
       httpresponse = await http.post(
         url,
-        body: _compress(json.encode(payload)),
+        body: json.encode(payload), // _compress(json.encode(payload)),
         headers: headers,
       );
 
-      return json.decode(_decompress(httpresponse.body))
+      return json.decode(utf8.decode(
+              httpresponse.body.codeUnits)) // _decompress(httpresponse.body))
           as Map<String, dynamic>;
     }
     //
@@ -121,19 +118,19 @@ class HttpProvider {
     return result;
   }
 
-  ///
-  String _compress(String origin) {
-    final gzip = GZipEncoder();
-    final zipped = gzip.encode(utf8.encode(origin));
+  // ///
+  // String _compress(String origin) {
+  //   final gzip = GZipEncoder();
+  //   final zipped = gzip.encode(utf8.encode(origin));
 
-    return base64.encode(zipped);
-  }
+  //   return base64.encode(zipped);
+  // }
 
-  ///
-  String _decompress(String origin) {
-    final gzip = GZipDecoder();
-    final data = base64.decode(origin);
+  // ///
+  // String _decompress(String origin) {
+  //   final gzip = GZipDecoder();
+  //   final data = base64.decode(origin);
 
-    return utf8.decode(gzip.decodeBytes(data));
-  }
+  //   return utf8.decode(gzip.decodeBytes(data));
+  // }
 }
