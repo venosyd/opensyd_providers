@@ -43,12 +43,14 @@ class PagSeguroProvider {
   ///
   final LoginProvider login;
 
-  ///
-  Future<String> token() async {
-    final response = await httpprovider.get([
+  ///{String conta}
+  Future<String> token({String conta}) async {
+    final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_TOKEN',
-    ], headers: {
+    ], <String, dynamic>{
+      'conta': conta,
+    }, headers: {
       'Authorization': 'Basic ${base64.encode((await login.token).codeUnits)}',
     });
 
@@ -58,11 +60,13 @@ class PagSeguroProvider {
   }
 
   ///
-  Future<String> credential() async {
-    final response = await httpprovider.get([
+  Future<String> credential({String conta}) async {
+    final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_CREDENTIAL',
-    ], headers: {
+    ], <String, dynamic>{
+      'conta': conta,
+    }, headers: {
       'Authorization': 'Basic ${base64.encode((await login.token).codeUnits)}',
     });
 
@@ -72,11 +76,13 @@ class PagSeguroProvider {
   }
 
   ///
-  Future<String> createSession() async {
-    final response = await httpprovider.get([
+  Future<String> createSession({String conta}) async {
+    final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_SESSION',
-    ], headers: {
+    ], <String, dynamic>{
+      'conta': conta,
+    }, headers: {
       'Authorization': 'Basic ${base64.encode((await login.token).codeUnits)}',
     });
 
@@ -90,12 +96,14 @@ class PagSeguroProvider {
     String planoNome,
     String planoSigla,
     String planoURLCancelamento,
-    String planoPreco,
-  ) async {
+    String planoPreco, {
+    String conta,
+  }) async {
     final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_PLAN_CREATE',
     ], <String, dynamic>{
+      'conta': conta,
       'planoNome': planoNome,
       'planoSigla': planoSigla,
       'planoURLCancelamento': planoURLCancelamento,
@@ -108,11 +116,16 @@ class PagSeguroProvider {
   }
 
   ///
-  Future<String> getCCBrand(String sessionID, String ccBin) async {
+  Future<String> getCCBrand(
+    String sessionID,
+    String ccBin, {
+    String conta,
+  }) async {
     final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_CC_BRAND',
     ], <String, dynamic>{
+      'conta': conta,
       'sessionID': sessionID,
       'ccBin': ccBin,
     }, headers: {
@@ -128,12 +141,14 @@ class PagSeguroProvider {
   Future<Map<String, dynamic>> getParcelas(
     String sessionID,
     String amount,
-    String ccBrand,
-  ) async {
+    String ccBrand, {
+    String conta,
+  }) async {
     final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_CC_PARCELAS',
     ], <String, dynamic>{
+      'conta': conta,
       'sessionID': sessionID,
       'amount': amount,
       'ccBrand': ccBrand,
@@ -151,12 +166,14 @@ class PagSeguroProvider {
     String ccNumero,
     String ccCVV,
     String ccMesExpiracao,
-    String ccAnoExpiracao,
-  ) async {
+    String ccAnoExpiracao, {
+    String conta,
+  }) async {
     final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_CC_TOKEN',
     ], <String, dynamic>{
+      'conta': conta,
       'sessionID': sessionID,
       'amount': amount,
       'ccNumero': ccNumero,
@@ -189,12 +206,14 @@ class PagSeguroProvider {
     String ccMesExpiracao,
     String ccAnoExpiracao,
     String ccDiaNascimento,
-    String parcelas,
-  ) async {
+    String parcelas, {
+    String conta,
+  }) async {
     final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_CHECKOUT_DO',
     ], <String, dynamic>{
+      'conta': conta,
       'sessionID': sessionID,
       'itemDescricao': itemDescricao,
       'itemSigla': itemSigla,
@@ -219,12 +238,16 @@ class PagSeguroProvider {
   }
 
   ///
-  Future<Map<String, dynamic>> seeCheckout(String checkoutCode) async {
+  Future<Map<String, dynamic>> seeCheckout(
+    String checkoutCode, {
+    String conta,
+  }) async {
     final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_CHECKOUT_SEE',
     ], <String, dynamic>{
-      'checkoutCode': checkoutCode
+      'conta': conta,
+      'checkoutCode': checkoutCode,
     }, headers: {
       'Authorization': 'Basic ${base64.encode((await login.token).codeUnits)}',
     });
@@ -254,12 +277,14 @@ class PagSeguroProvider {
     String ccCVV,
     String ccMesExpiracao,
     String ccAnoExpiracao,
-    String ccDiaNascimento,
-  ) async {
+    String ccDiaNascimento, {
+    String conta,
+  }) async {
     final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_SUBSCRIPTION_DO',
     ], <String, dynamic>{
+      'conta': conta,
       'sessionID': sessionID,
       'planoID': planID,
       'planoSigla': planSigla,
@@ -289,12 +314,16 @@ class PagSeguroProvider {
   }
 
   ///
-  Future<Map<String, dynamic>> seeSubscription(String subscriptionCode) async {
+  Future<Map<String, dynamic>> seeSubscription(
+    String subscriptionCode, {
+    String conta,
+  }) async {
     final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_SUBSCRIPTION_SEE',
     ], <String, dynamic>{
-      'subscriptionCode': subscriptionCode
+      'conta': conta,
+      'subscriptionCode': subscriptionCode,
     }, headers: {
       'Authorization': 'Basic ${base64.encode((await login.token).codeUnits)}',
     });
@@ -303,12 +332,16 @@ class PagSeguroProvider {
   }
 
   ///
-  Future<Map<String, dynamic>> cancelSubscription(String subscriptionID) async {
+  Future<Map<String, dynamic>> cancelSubscription(
+    String subscriptionID, {
+    String conta,
+  }) async {
     final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
       'PAGSEGURO_SUBSCRIPTION_CANCEL',
     ], <String, dynamic>{
-      'subscriptionID': subscriptionID
+      'conta': conta,
+      'subscriptionID': subscriptionID,
     }, headers: {
       'Authorization': 'Basic ${base64.encode((await login.token).codeUnits)}',
     });
