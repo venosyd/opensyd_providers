@@ -61,7 +61,7 @@ class HttpProvider {
 
     try {
       httpresponse = await http.post(
-        url,
+        Uri.parse(url),
         body: json.encode(payload), // _compress(json.encode(payload)),
         headers: headers,
       );
@@ -88,7 +88,7 @@ class HttpProvider {
     http.Response httpresponse;
 
     try {
-      httpresponse = await http.get(url, headers: headers ?? {});
+      httpresponse = await http.get(Uri.parse(url), headers: headers ?? {});
       return json.decode(utf8.decode(httpresponse.body.codeUnits))
           as Map<String, dynamic>;
     }
