@@ -98,6 +98,7 @@ class PagSeguroProvider {
     String planoURLCancelamento,
     String planoPreco, {
     String conta,
+    String periodoGratuito = '1', // em dias
   }) async {
     final response = await httpprovider.post([
       'PAGSEGURO_BASE_URL',
@@ -108,6 +109,7 @@ class PagSeguroProvider {
       'planoSigla': planoSigla,
       'planoURLCancelamento': planoURLCancelamento,
       'planoPreco': planoPreco,
+      'trialPeriod': periodoGratuito,
     }, headers: {
       'Authorization': 'Basic ${base64.encode((await login.token).codeUnits)}',
     });
