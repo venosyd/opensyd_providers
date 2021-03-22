@@ -34,9 +34,11 @@ class AddressProvider {
           devmode: devmode,
           securedev: securedev,
           repository: repository,
-          db: '5956b256f5438105c4d2e242ea91e44b',
-          authkey: 'b13af2c67189c10fe07bc5f5f90a'
-              '4ec7423a8260dd84f015a0b73be5b9930287',
+          db: DB,
+          authkey: KEY,
+          fromjson: OpensydModel.instance.instanceBuilder,
+          emptyinstance: OpensydModel.instance.emptyInstanceGen,
+          collectionmap: OpensydModel.instance.collectionMap,
         );
 
   ///
@@ -53,6 +55,13 @@ class AddressProvider {
       );
 
   ///
+  static const DB = '5956b256f5438105c4d2e242ea91e44b';
+
+  ///
+  static const KEY = 'b13af2c67189c10fe07bc5f5f90a'
+      '4ec7423a8260dd84f015a0b73be5b9930287';
+
+  ///
   final HttpProvider _http;
 
   ///
@@ -64,6 +73,7 @@ class AddressProvider {
   ///
   final Map<String, Logradouro> _cache = {};
 
+  ///
   ///
   Future<Logradouro> getLogradouro(String cep) async {
     cep = (cep.startsWith('0') ? cep.substring(1) : cep).onlydigits;
@@ -85,7 +95,7 @@ class AddressProvider {
       final payload = response['payload'] as String;
       final jSON = json.decode(payload) as Map<String, dynamic>;
 
-      final logradouro = Logradouro.fromJson(jSON);
+      final logradouro = Logradouro().fromJson(jSON);
       _cache[cep] = await logradouro.deep(entities);
 
       return logradouro;

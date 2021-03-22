@@ -9,7 +9,7 @@ import 'package:opensyd_dart/opensyd_dart.dart';
 
 /// retora uma query em forma de mapa de buscas com as
 /// IDs que nao precisam retornar
-Map<String, dynamic> notThisIDs<T extends SerializableEntity>(List<T> cached) =>
+Map<String, dynamic> notThisIDs<T extends OpensydEntity>(List<T> cached) =>
     <String, dynamic>{
       '_id': {
         r'$nin': cached.map((i) => i.id).toList(),
@@ -20,8 +20,8 @@ Map<String, dynamic> notThisIDs<T extends SerializableEntity>(List<T> cached) =>
 /// trata as buscas do mongodb no cache local
 /// NAO MEXA NESSA PORRA NEM COM SUA VIDA EM RISCO
 ///
-bool searchByQuery<T extends SerializableEntity>(
-  SerializableEntity e,
+bool searchByQuery<T extends OpensydEntity>(
+  OpensydEntity e,
   Map<String, dynamic> query,
 ) {
   final maps = <bool>[];

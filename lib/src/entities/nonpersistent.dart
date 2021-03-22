@@ -30,7 +30,7 @@ class NonPersistentEntitiesProvider extends EntitiesRepository {
   //
 
   @override
-  Future<T> save<T extends SerializableEntity>(T object, [Type type]) async {
+  Future<T> save<T extends OpensydEntity>(T object, [Type type]) async {
     object.id ??= '${DateTime.now().microsecondsSinceEpoch}';
 
     if (object != null) {
@@ -44,7 +44,7 @@ class NonPersistentEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<String> delete<T extends SerializableEntity>(
+  Future<String> delete<T extends OpensydEntity>(
     T object, [
     Type type,
   ]) async {
@@ -61,7 +61,7 @@ class NonPersistentEntitiesProvider extends EntitiesRepository {
   //
 
   @override
-  Future<T> byID<T extends SerializableEntity>(String id, [Type type]) async {
+  Future<T> byID<T extends OpensydEntity>(String id, [Type type]) async {
     if (id == null || id.isEmpty) {
       return null;
     }
@@ -77,7 +77,7 @@ class NonPersistentEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<T> by<T extends SerializableEntity>({
+  Future<T> by<T extends OpensydEntity>({
     String field,
     dynamic data,
     Type type,
@@ -99,14 +99,14 @@ class NonPersistentEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<T> byQuery<T extends SerializableEntity>(
+  Future<T> byQuery<T extends OpensydEntity>(
     Map<String, dynamic> query, [
     Type type,
   ]) async {
     if (cache.containsKey(T)) {
       List<T> objs = [];
 
-      Iterable<SerializableEntity> it = cache[T].values;
+      Iterable<OpensydEntity> it = cache[T].values;
 
       query.forEach((field, dynamic data) =>
           it = it.where((e) => searchByQuery(e, query)));
@@ -130,11 +130,11 @@ class NonPersistentEntitiesProvider extends EntitiesRepository {
   //
 
   @override
-  Future<List<T>> all<T extends SerializableEntity>([Type type]) async =>
+  Future<List<T>> all<T extends OpensydEntity>([Type type]) async =>
       cache[T]?.values?.toList()?.cast<T>() ?? [];
 
   @override
-  Stream<List<T>> allStream<T extends SerializableEntity>({
+  Stream<List<T>> allStream<T extends OpensydEntity>({
     Map<String, dynamic> query,
     List<String> ids,
     Type type,
@@ -148,14 +148,14 @@ class NonPersistentEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<List<String>> allIDs<T extends SerializableEntity>([
+  Future<List<String>> allIDs<T extends OpensydEntity>([
     Map<String, dynamic> query,
     Type type,
   ]) async =>
       (await listByQuery<T>(query, type)).map((e) => e.id).toList();
 
   @override
-  Future<List<T>> listByIDs<T extends SerializableEntity>(
+  Future<List<T>> listByIDs<T extends OpensydEntity>(
     List<String> ids, [
     Type type,
   ]) async {
@@ -175,7 +175,7 @@ class NonPersistentEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<List<T>> listBy<T extends SerializableEntity>({
+  Future<List<T>> listBy<T extends OpensydEntity>({
     String field,
     dynamic data,
     Type type,
@@ -199,7 +199,7 @@ class NonPersistentEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<List<T>> listByQuery<T extends SerializableEntity>(
+  Future<List<T>> listByQuery<T extends OpensydEntity>(
     Map<String, dynamic> query, [
     Type type,
   ]) async {
@@ -210,7 +210,7 @@ class NonPersistentEntitiesProvider extends EntitiesRepository {
     List<T> list = [];
 
     if (cache.containsKey(T)) {
-      Iterable<SerializableEntity> it = cache[T].values;
+      Iterable<OpensydEntity> it = cache[T].values;
 
       query.forEach((field, dynamic data) =>
           it = it.where((e) => searchByQuery(e, query)));

@@ -62,7 +62,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
   //
 
   @override
-  Future<T> save<T extends SerializableEntity>(T object, [Type type]) async {
+  Future<T> save<T extends OpensydEntity>(T object, [Type type]) async {
     final obj = object.id == null ? await _save(object) : await _update(object);
 
     if (obj != null && !cachedisabled) {
@@ -77,7 +77,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
   }
 
   ///
-  Future<T> _save<T extends SerializableEntity>(T object) async {
+  Future<T> _save<T extends OpensydEntity>(T object) async {
     final response = await mongodb.save(
       authkey: authkey,
       token: await login.token,
@@ -90,7 +90,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
   }
 
   ///
-  Future<T> _update<T extends SerializableEntity>(T object) async {
+  Future<T> _update<T extends OpensydEntity>(T object) async {
     final response = await mongodb.update(
       authkey: authkey,
       token: await login.token,
@@ -103,7 +103,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<String> delete<T extends SerializableEntity>(T object,
+  Future<String> delete<T extends OpensydEntity>(T object,
       [Type type]) async {
     final result = await mongodb.erase(
       authkey: authkey,
@@ -127,7 +127,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
   //
 
   @override
-  Future<T> byID<T extends SerializableEntity>(String id, [Type type]) async {
+  Future<T> byID<T extends OpensydEntity>(String id, [Type type]) async {
     if (id == null || id.isEmpty) {
       return null;
     }
@@ -161,7 +161,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<T> by<T extends SerializableEntity>({
+  Future<T> by<T extends OpensydEntity>({
     String field,
     dynamic data,
     Type type,
@@ -203,7 +203,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<T> byQuery<T extends SerializableEntity>(Map<String, dynamic> query,
+  Future<T> byQuery<T extends OpensydEntity>(Map<String, dynamic> query,
       [Type type]) async {
     if (query == null || query.isEmpty) {
       return null;
@@ -212,7 +212,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
     if (cache.containsKey(T) && !cachedisabled) {
       List<T> objs = [];
 
-      Iterable<SerializableEntity> it = cache[T].values;
+      Iterable<OpensydEntity> it = cache[T].values;
 
       query.forEach((field, dynamic data) =>
           it = it.where((e) => searchByQuery(e, query)));
@@ -254,7 +254,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
   //
 
   @override
-  Future<List<T>> all<T extends SerializableEntity>([Type type]) async {
+  Future<List<T>> all<T extends OpensydEntity>([Type type]) async {
     var list = <T>[];
 
     // with cache
@@ -301,7 +301,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<List<String>> allIDs<T extends SerializableEntity>([
+  Future<List<String>> allIDs<T extends OpensydEntity>([
     Map<String, dynamic> query,
     Type type,
   ]) async =>
@@ -317,7 +317,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
           .toList();
 
   @override
-  Stream<List<T>> allStream<T extends SerializableEntity>({
+  Stream<List<T>> allStream<T extends OpensydEntity>({
     Map<String, dynamic> query,
     List<String> ids,
     Type type,
@@ -334,7 +334,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<List<T>> listByIDs<T extends SerializableEntity>(
+  Future<List<T>> listByIDs<T extends OpensydEntity>(
     List<String> ids, [
     Type type,
   ]) async =>
@@ -345,7 +345,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
       });
 
   @override
-  Future<List<T>> listBy<T extends SerializableEntity>({
+  Future<List<T>> listBy<T extends OpensydEntity>({
     String field,
     dynamic data,
     Type type,
@@ -414,7 +414,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<List<T>> listByQuery<T extends SerializableEntity>(
+  Future<List<T>> listByQuery<T extends OpensydEntity>(
     Map<String, dynamic> query, [
     Type type,
   ]) async {
@@ -426,7 +426,7 @@ class RemoteEntitiesProvider extends EntitiesRepository {
 
     // with cache
     if (cache.containsKey(T) && !cachedisabled) {
-      Iterable<SerializableEntity> it = cache[T].values;
+      Iterable<OpensydEntity> it = cache[T].values;
 
       query.forEach((field, dynamic data) =>
           it = it.where((e) => searchByQuery(e, query)));

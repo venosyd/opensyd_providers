@@ -48,9 +48,9 @@ abstract class EntitiesRepository extends Entities {
     Database localdb,
     LoginProvider login,
     RepositoryProvider repository,
-    InstanceBuilder fromjson = opensydEntitiesMap,
-    EmptyInstanceGen emptyinstance = opensydEmptyInstance,
-    CollectionMap collectionmap = opensydCollectionMap,
+    InstanceBuilder fromjson,
+    EmptyInstanceGen emptyinstance,
+    CollectionMap collectionmap,
   }) {
     if (isNonPersistent) {
       return _buildNonPersistentEntities(

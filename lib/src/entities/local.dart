@@ -42,8 +42,8 @@ class LocalEntitiesProvider extends EntitiesRepository {
   //
 
   @override
-  Future<T> save<T extends SerializableEntity>(T object, [Type type]) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+  Future<T> save<T extends OpensydEntity>(T object, [Type type]) async {
+    type = '$T' == '$OpensydEntity' ? type : T;
     object.id ??= '${DateTime.now().microsecondsSinceEpoch}';
 
     final persisted = await _loadstorage<T>(type);
@@ -63,11 +63,11 @@ class LocalEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<String> delete<T extends SerializableEntity>(
+  Future<String> delete<T extends OpensydEntity>(
     T object, [
     Type type,
   ]) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+    type = '$T' == '$OpensydEntity' ? type : T;
 
     final persisted = await _loadstorage<T>(type);
     persisted.remove(object.id);
@@ -87,8 +87,8 @@ class LocalEntitiesProvider extends EntitiesRepository {
   //
 
   @override
-  Future<T> byID<T extends SerializableEntity>(String id, [Type type]) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+  Future<T> byID<T extends OpensydEntity>(String id, [Type type]) async {
+    type = '$T' == '$OpensydEntity' ? type : T;
 
     if (id == null || id.isEmpty) {
       return null;
@@ -119,12 +119,12 @@ class LocalEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<T> by<T extends SerializableEntity>({
+  Future<T> by<T extends OpensydEntity>({
     String field,
     dynamic data,
     Type type,
   }) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+    type = '$T' == '$OpensydEntity' ? type : T;
 
     if ((field == null || field.isEmpty) || (data == null)) {
       return null;
@@ -157,14 +157,14 @@ class LocalEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<T> byQuery<T extends SerializableEntity>(Map<String, dynamic> query,
+  Future<T> byQuery<T extends OpensydEntity>(Map<String, dynamic> query,
       [Type type]) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+    type = '$T' == '$OpensydEntity' ? type : T;
 
     if (cache.containsKey(type) && !cachedisabled) {
       List<T> objs = [];
 
-      Iterable<SerializableEntity> it = cache[type].values;
+      Iterable<OpensydEntity> it = cache[type].values;
 
       query.forEach((field, dynamic data) =>
           it = it.where((e) => searchByQuery(e, query)));
@@ -202,8 +202,8 @@ class LocalEntitiesProvider extends EntitiesRepository {
   //
 
   @override
-  Future<List<T>> all<T extends SerializableEntity>([Type type]) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+  Future<List<T>> all<T extends OpensydEntity>([Type type]) async {
+    type = '$T' == '$OpensydEntity' ? type : T;
 
     final list = (await _loadentities<T>(type))
         .map((e) => builder(e))
@@ -219,12 +219,12 @@ class LocalEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Stream<List<T>> allStream<T extends SerializableEntity>({
+  Stream<List<T>> allStream<T extends OpensydEntity>({
     Map<String, dynamic> query,
     List<String> ids,
     Type type,
   }) async* {
-    type = '$T' == '$SerializableEntity' ? type : T;
+    type = '$T' == '$OpensydEntity' ? type : T;
 
     final list = <T>[];
 
@@ -235,18 +235,18 @@ class LocalEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<List<String>> allIDs<T extends SerializableEntity>([
+  Future<List<String>> allIDs<T extends OpensydEntity>([
     Map<String, dynamic> query,
     Type type,
   ]) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+    type = '$T' == '$OpensydEntity' ? type : T;
     return (await listByQuery<T>(query, type)).map((e) => e.id).toList();
   }
 
   @override
-  Future<List<T>> listByIDs<T extends SerializableEntity>(List<String> ids,
+  Future<List<T>> listByIDs<T extends OpensydEntity>(List<String> ids,
       [Type type]) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+    type = '$T' == '$OpensydEntity' ? type : T;
 
     if (ids == null || ids.isEmpty) {
       return [];
@@ -291,12 +291,12 @@ class LocalEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<List<T>> listBy<T extends SerializableEntity>({
+  Future<List<T>> listBy<T extends OpensydEntity>({
     String field,
     dynamic data,
     Type type,
   }) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+    type = '$T' == '$OpensydEntity' ? type : T;
 
     if ((field == null || field.isEmpty) || (data == null)) {
       return [];
@@ -353,11 +353,11 @@ class LocalEntitiesProvider extends EntitiesRepository {
   }
 
   @override
-  Future<List<T>> listByQuery<T extends SerializableEntity>(
+  Future<List<T>> listByQuery<T extends OpensydEntity>(
     Map<String, dynamic> query, [
     Type type,
   ]) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+    type = '$T' == '$OpensydEntity' ? type : T;
 
     if (query == null || query.isEmpty) {
       return await all<T>(type);
@@ -367,7 +367,7 @@ class LocalEntitiesProvider extends EntitiesRepository {
 
     // with cache
     if (cache.containsKey(type) && !cachedisabled) {
-      Iterable<SerializableEntity> it = cache[type].values;
+      Iterable<OpensydEntity> it = cache[type].values;
 
       query.forEach((field, dynamic data) =>
           it = it.where((e) => searchByQuery(e, query)));
@@ -412,10 +412,10 @@ class LocalEntitiesProvider extends EntitiesRepository {
   //
 
   ///
-  Future<Map<String, dynamic>> _loadstorage<T extends SerializableEntity>([
+  Future<Map<String, dynamic>> _loadstorage<T extends OpensydEntity>([
     Type type,
   ]) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+    type = '$T' == '$OpensydEntity' ? type : T;
 
     var data = await baselocal.retrieve('$type');
     data = data == null || data.isEmpty ? '{}' : data;
@@ -425,8 +425,8 @@ class LocalEntitiesProvider extends EntitiesRepository {
 
   ///
   Future<List<Map<String, dynamic>>>
-      _loadentities<T extends SerializableEntity>([Type type]) async {
-    type = '$T' == '$SerializableEntity' ? type : T;
+      _loadentities<T extends OpensydEntity>([Type type]) async {
+    type = '$T' == '$OpensydEntity' ? type : T;
 
     final persisted = await _loadstorage<T>(type);
     return persisted.values.cast<Map<String, dynamic>>().toList();

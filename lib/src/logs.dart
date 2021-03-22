@@ -27,13 +27,15 @@ class LogsProvider {
           devmode: devmode,
           login: login,
           securedev: securedev,
-          db: 'c71310c076c53350de661cbe2ac6e70a',
-          authkey: '60cb3d4bdd0e4aa8443be39657054ace'
-              '1de7ba9aa1300ef6a5998c020eed3d51',
+          db: DB,
+          authkey: KEY,
           repository: repository ??= RepositoryProvider(
             repositoryHost(devmode, securedev),
             login,
           ),
+          fromjson: OpensydModel.instance.instanceBuilder,
+          emptyinstance: OpensydModel.instance.emptyInstanceGen,
+          collectionmap: OpensydModel.instance.collectionMap,
         );
 
   ///
@@ -49,6 +51,13 @@ class LogsProvider {
         namespace: namespace,
         login: login,
       );
+
+  ///
+  static const DB = 'c71310c076c53350de661cbe2ac6e70a';
+
+  ///
+  static const KEY = '60cb3d4bdd0e4aa8443be39657054ace'
+      '1de7ba9aa1300ef6a5998c020eed3d51';
 
   ///
   final EntitiesRepository _entities;
